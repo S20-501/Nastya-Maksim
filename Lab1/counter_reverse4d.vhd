@@ -7,7 +7,8 @@ entity counter_reverse4d is
 		clock		: in	std_logic;
 		summing	: in	std_logic;
 		reset		: in	std_logic;
-		Q_out		: out	std_logic_vector(3 downto 0)
+		Q_out		: out	std_logic_vector(3 downto 0);
+		overflow	: out	std_logic
 	);
 end counter_reverse4d;
 
@@ -40,6 +41,8 @@ begin
 	decrement <= clock and not summing;
 	
 	Q_out <= T_trigs_out;
+	
+	overflow <= not enable_inc or not enable_dec;
 	
 	T_trigs_in(0) <= ands_plus(0) or ands_minus(0);
 	T_trigs_in(1) <= ands_plus(1) or ands_minus(1);
