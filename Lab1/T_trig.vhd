@@ -6,7 +6,8 @@ entity T_trig is
 	(
 		T_in	: in  std_logic;
 		reset	: in  std_logic;
-		Q_out	: out std_logic
+		Q_out	: out std_logic;
+		nQ_out: out	std_logic
 	);
 end T_trig;
 
@@ -14,6 +15,7 @@ architecture Behavioral of T_trig is
 	signal inner_value	:	std_logic;
 begin
 	Q_out <= inner_value;
+	nQ_out<= not inner_value;
 	
 	process (T_in, reset)
    begin

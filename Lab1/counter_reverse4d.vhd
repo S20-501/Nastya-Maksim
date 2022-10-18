@@ -19,11 +19,13 @@ architecture rtl of counter_reverse4d is
 		(
 			T_in		: in  std_logic;
 			reset		: in  std_logic;
-			Q_out		: out std_logic
+			Q_out		: out std_logic;
+			nQ_out	: out std_logic
 		);
 	end component;
 	
 	signal T_trigs_out	:	std_logic_vector(3 downto 0);
+	signal not_T_trigs_out	:	std_logic_vector(3 downto 0);
 	signal T_trigs_in		:	std_logic_vector(3 downto 0);
 	
 	signal ands_plus		:	std_logic_vector(3 downto 0);
@@ -50,34 +52,38 @@ begin
 	T_trigs_in(3) <= ands_plus(3) or ands_minus(3);
 	
 	enable_inc <= not (T_trigs_out(0) and T_trigs_out(1) and T_trigs_out(2) and T_trigs_out(3) and summing);
-	enable_dec <= not (not T_trigs_out(0) and not T_trigs_out(1) and not T_trigs_out(2) and not T_trigs_out(3) and not summing);
+	enable_dec <= not (not_T_trigs_out(0) and not_T_trigs_out(1) and not_T_trigs_out(2) and not_T_trigs_out(3) and not summing);
 	
 	T_trig_0:T_trig port map
 	(
 		reset	=> reset,
 		T_in	=> T_trigs_in(0),
-		Q_out	=> T_trigs_out(0)     
+		Q_out	=> T_trigs_out(0),
+		nQ_out=> not_T_trigs_out(0)
 	);
 	
 	T_trig_1:T_trig port map
 	(
 		reset	=> reset,
 		T_in	=> T_trigs_in(1),
-		Q_out	=> T_trigs_out(1)      
+		Q_out	=> T_trigs_out(1),
+		nQ_out=> not_T_trigs_out(1)
 	);
 	
 	T_trig_2:T_trig port map
 	(
 		reset	=> reset,
 		T_in	=> T_trigs_in(2),
-		Q_out	=> T_trigs_out(2)
+		Q_out	=> T_trigs_out(2),
+		nQ_out=> not_T_trigs_out(2)
 	);
 	
 	T_trig_3:T_trig port map
 	(
 		reset	=> reset,
 		T_in	=> T_trigs_in(3),
-		Q_out	=> T_trigs_out(3)      
+		Q_out	=> T_trigs_out(3),
+		nQ_out=> not_T_trigs_out(3)
 	);
 	
 	process(increment)
@@ -94,9 +100,9 @@ begin
 	begin
 		if(enable_dec = '1') then
 			ands_minus(0) <= decrement;
-			ands_minus(1) <= not T_trigs_out(0) and decrement;
-			ands_minus(2) <= not T_trigs_out(0) and not T_trigs_out(1) and decrement;
-			ands_minus(3) <= not T_trigs_out(0) and not T_trigs_out(1) and not T_trigs_out(2) and decrement;
+			ands_minus(1) <= not_T_trigs_out(0) and decrement;
+			ands_minus(2) <= not_T_trigs_out(0) and not_T_trigs_out(1) and decrement;
+			ands_minus(3) <= not_T_trigs_out(0) and not_T_trigs_out(1) and not_T_trigs_out(2) and decrement;
 		end if;
 	end process;
 
