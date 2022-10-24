@@ -89,7 +89,7 @@ begin
 		nQ_out=> not_T_trigs_out(3)
 	);
 	
-	process(previous_increment, increment, enable_inc, T_trigs_out, ands_plus)
+	process(previous_increment, increment, enable_inc, T_trigs_out)
 	begin
 		if(increment /= previous_increment) then
 			ands_plus(0) <= increment and enable_inc;
@@ -101,7 +101,7 @@ begin
 		end if;
 	end process;
 	
-	process(previous_decrement, decrement, enable_dec, not_T_trigs_out, ands_minus)
+	process(previous_decrement, decrement, enable_dec, not_T_trigs_out)
 	begin
 		if(decrement /= previous_decrement) then
 			ands_minus(0) <= decrement and enable_dec;
@@ -111,4 +111,6 @@ begin
 			
 			previous_decrement <= decrement;
 		end if;
-	
+	end process;
+
+end rtl;

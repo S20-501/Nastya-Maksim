@@ -11,7 +11,7 @@ entity T_trig is
 	);
 end T_trig;
 
-architecture Behavioral of T_trig is
+architecture rtl of T_trig is
 	signal inner_value	:	std_logic;
 begin
 	Q_out <= inner_value;
@@ -26,4 +26,4 @@ begin
 		end if;
 	end process;
 
-end Behavioral;
+end rtl;
