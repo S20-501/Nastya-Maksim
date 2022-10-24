@@ -36,6 +36,9 @@ architecture rtl of counter_reverse4d is
 	
 	signal increment	:	std_logic;
 	signal decrement	:	std_logic;
+	
+	signal previous_increment	:	std_logic;
+	signal previous_decrement	:	std_logic;
 
 begin
 
@@ -86,24 +89,26 @@ begin
 		nQ_out=> not_T_trigs_out(3)
 	);
 	
-	process(increment)
+	process(previous_increment, increment, enable_inc, T_trigs_out, ands_plus)
 	begin
-		if(enable_inc = '1') then		
-			ands_plus(0) <= increment;
-			ands_plus(1) <= T_trigs_out(0) and increment;
-			ands_plus(2) <= T_trigs_out(0) and T_trigs_out(1) and increment;
-			ands_plus(3) <= T_trigs_out(0) and T_trigs_out(1) and T_trigs_out(2) and increment;
+		if(increment /= previous_increment) then
+			ands_plus(0) <= increment and enable_inc;
+			ands_plus(1) <= T_trigs_out(0) and increment and enable_inc;
+			ands_plus(2) <= T_trigs_out(0) and T_trigs_out(1) and increment and enable_inc;
+			ands_plus(3) <= T_trigs_out(0) and T_trigs_out(1) and T_trigs_out(2) and increment and enable_inc;
+			
+			previous_increment <= increment;
 		end if;
 	end process;
 	
-	process(decrement)
+	process(previous_decrement, decrement, enable_dec, not_T_trigs_out, ands_minus)
 	begin
-		if(enable_dec = '1') then
-			ands_minus(0) <= decrement;
-			ands_minus(1) <= not_T_trigs_out(0) and decrement;
-			ands_minus(2) <= not_T_trigs_out(0) and not_T_trigs_out(1) and decrement;
-			ands_minus(3) <= not_T_trigs_out(0) and not_T_trigs_out(1) and not_T_trigs_out(2) and decrement;
+		if(decrement /= previous_decrement) then
+			ands_minus(0) <= decrement and enable_dec;
+			ands_minus(1) <= not_T_trigs_out(0) and decrement and enable_dec;
+			ands_minus(2) <= not_T_trigs_out(0) and not_T_trigs_out(1) and decrement and enable_dec;
+			ands_minus(3) <= not_T_trigs_out(0) and not_T_trigs_out(1) and not_T_trigs_out(2) and decrement and enable_dec;
+			
+			previous_decrement <= decrement;
 		end if;
-	end process;
-
-end rtl;
+	
