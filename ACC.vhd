@@ -18,7 +18,7 @@ architecture Behavioral of ACC is
 
 begin
 
-	process(clk, nRst) 
+	process(clk, nRst, ACC_in, FTW) 
 	begin
 		if(nRst = '0') then
 			ACC_out <= (others => '0');
