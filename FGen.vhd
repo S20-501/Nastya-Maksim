@@ -5,7 +5,6 @@ use ieee.numeric_std.all;
 entity FGen is
 	port(
 		ACC_out		: in	unsigned(31 downto 0);
-		enable		: in	std_logic;
 		
 		fADC			: out	std_logic;
 		fDataFlow	: out	std_logic
@@ -18,7 +17,7 @@ architecture Behavioral of FGen is
 
 begin
 	
-	fADC <= ACC_out(31) and enable;
-	fDataFlow <= ACC_out(30) and enable;
+	fADC <= ACC_out(31);
+	fDataFlow <= ACC_out(30);
 
 end Behavioral;

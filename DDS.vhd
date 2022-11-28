@@ -38,6 +38,7 @@ architecture Behavioral of DDS is
 		port(
 			clk		: in	std_logic;
 			nRst		: in	std_logic;
+			enable	: in 	std_logic;
 			FTW		: in	unsigned(31 downto 0);
 			ACC_in	: in	unsigned(31 downto 0);
 			
@@ -48,8 +49,7 @@ architecture Behavioral of DDS is
 	component FGen is
 		port(
 			ACC_out		: in	unsigned(31 downto 0);
-			enable		: in	std_logic;
-			
+
 			fADC			: out	std_logic;
 			fDataFlow	: out	std_logic
 		);
@@ -92,17 +92,11 @@ begin
 		-- Сигналы WISHBONE
 		WB_Addr		=> WB_Addr,
 		WB_DataOut	=> WB_DataOut,
-		WB_DataIn_0	=> WB_DataIn_0,
-		WB_DataIn_1	=> WB_DataIn_1,
-		WB_DataIn_2	=> WB_DataIn_2,
-		WB_DataIn_3	=> WB_DataIn_3,
+		WB_DataIn	=> WB_DataIn,
 		WB_WE			=> WB_WE,
 		WB_Sel		=> WB_Sel,
 		WB_STB		=> WB_STB,
-		WB_Cyc_0		=> WB_Cyc_0,
-		WB_Cyc_1		=> WB_Cyc_1,
-		WB_Cyc_2		=> WB_Cyc_2,
-		WB_Cyc_3		=> WB_Cyc_3,
+		WB_Cyc		=> WB_Cyc,
 		WB_Ack		=> WB_Ack,
 		WB_CTI		=> WB_CTI,
 		
@@ -115,6 +109,7 @@ begin
 	ACC_0:ACC port map(
 		clk		=> clk,
 		nRst		=> nRst,
+		enable	=> enable,
 		FTW		=> ADC_FTW,
 		ACC_in	=> ACC_reg,
 		
@@ -123,7 +118,6 @@ begin
 	
 	FGen_0:FGen port map(
 		ACC_out		=> ACC_reg,
-		enable		=> enable,
 			
 		fADC			=> ADC_Clk,
 		fDataFlow	=> DataFlow_Clk

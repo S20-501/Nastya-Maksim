@@ -7,6 +7,7 @@ entity ACC is
 	(
 		clk		: in	std_logic;
 		nRst		: in	std_logic;
+		enable	: in 	std_logic;
 		FTW		: in	unsigned(31 downto 0);
 		ACC_in	: in	unsigned(31 downto 0);
 		
@@ -18,11 +19,11 @@ architecture Behavioral of ACC is
 
 begin
 
-	process(clk, nRst, ACC_in, FTW) 
+	process(clk, nRst, ACC_in, FTW, enable) 
 	begin
 		if(nRst = '0') then
 			ACC_out <= (others => '0');
-		elsif(rising_edge(clk)) then
+		elsif(rising_edge(clk) and not enable) then
 			ACC_out <= ACC_in + FTW;
 		end if;
 	end process;

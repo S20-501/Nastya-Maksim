@@ -17,17 +17,11 @@ architecture sim of DDS_tb is
 
 	signal WB_Addr			: std_logic_vector(15 downto 0);
 	signal WB_DataOut		: std_logic_vector(15 downto 0);
-	signal WB_DataIn_0	: std_logic_vector(15 downto 0);
-	signal WB_DataIn_1	: std_logic_vector(15 downto 0);
-	signal WB_DataIn_2	: std_logic_vector(15 downto 0);
-	signal WB_DataIn_3	: std_logic_vector(15 downto 0);
+	signal WB_DataIn		: std_logic_vector(15 downto 0);
 	signal WB_WE			: std_logic;
 	signal WB_Sel			: std_logic_vector(1 downto 0);
 	signal WB_STB			: std_logic;
-	signal WB_Cyc_0		: std_logic;
-	signal WB_Cyc_1		: std_logic;
-	signal WB_Cyc_2		: std_logic;
-	signal WB_Cyc_3		: std_logic;
+	signal WB_Cyc			: std_logic;
 	signal WB_Ack			: std_logic;
 	signal WB_CTI			: std_logic_vector(2 downto 0);
 
@@ -42,17 +36,11 @@ begin
 		-- Сигналы WISHBONE
 		WB_Addr		=> WB_Addr,
 		WB_DataOut	=> WB_DataOut,
-		WB_DataIn_0	=> WB_DataIn_0,
-		WB_DataIn_1	=> WB_DataIn_1,
-		WB_DataIn_2	=> WB_DataIn_2,
-		WB_DataIn_3	=> WB_DataIn_3,
+		WB_DataIn	=> WB_DataIn,
 		WB_WE			=> WB_WE,
 		WB_Sel		=> WB_Sel,
 		WB_STB		=> WB_STB,
-		WB_Cyc_0		=> WB_Cyc_0,
-		WB_Cyc_1		=> WB_Cyc_1,
-		WB_Cyc_2		=> WB_Cyc_2,
-		WB_Cyc_3		=> WB_Cyc_3,
+		WB_Cyc		=> WB_Cyc,
 		WB_Ack		=> WB_Ack,
 		WB_CTI		=> WB_CTI,
 		
