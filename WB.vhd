@@ -49,29 +49,33 @@ begin
 				reg_enable <= '0';
 				reg_ADC_FTW <= (others => '0');
 			elsif ((WB_STB and WB_WE and WB_Cyc) = '1') then
-				for k in 0 to 1 loop -- for each 8-byte-word in WB_DataIn
-					if(WB_Sel(k) = '1') then
-						case to_integer(unsigned(WB_Addr)) + k is
-							when BASE_ADDR + ADC_FSC_OFF => 
-								-- It is freq syn control
-								reg_clear <= WB_DataIn(8*k);
-								reg_enable<= WB_DataIn(8*k+1);
-							when BASE_ADDR + ADC_FTW_OFF =>
-								-- It is 1st part off FTW
-								reg_ADC_FTW(7 downto 0) <= WB_DataIn(8*(k+1)-1 downto 8*k);
-								-- It is 2nd part off FTW
-							when BASE_ADDR + ADC_FTW_OFF + 1 =>
-								reg_ADC_FTW(15 downto 8) <= WB_DataIn(8*(k+1)-1 downto 8*k);
-								-- It is 3rd part off FTW
-							when BASE_ADDR + ADC_FTW_OFF + 2 =>
-								reg_ADC_FTW(23 downto 16) <= WB_DataIn(8*(k+1)-1 downto 8*k);
-								-- It is 4th part off FTW
-							when BASE_ADDR + ADC_FTW_OFF + 3 =>
-								reg_ADC_FTW(31 downto 24) <= WB_DataIn(8*(k+1)-1 downto 8*k);
-							when others => null; -- nothing to do on other addresses
-						end case;
-					end if;
-				end loop;
+				case(CTI) is
+					when "000" | "001" | "111" =>
+						-- if classic cycle
+						for k in 0 to 1 loop -- for each 8-byte-word in WB_DataIn
+							if(WB_Sel(k) = '1') then
+								case(to_integer(unsigned(WB_Addr)) + k) is
+									when BASE_ADDR + ADC_FSC_OFF => 
+										-- It is freq syn control
+										reg_clear <= WB_DataIn(8*k);
+										reg_enable<= WB_DataIn(8*k+1);
+									when BASE_ADDR + ADC_FTW_OFF =>
+										-- It is 1st part off FTW
+										reg_ADC_FTW(7 downto 0) <= WB_DataIn(8*(k+1)-1 downto 8*k);
+										-- It is 2nd part off FTW
+									when BASE_ADDR + ADC_FTW_OFF + 1 =>
+										reg_ADC_FTW(15 downto 8) <= WB_DataIn(8*(k+1)-1 downto 8*k);
+										-- It is 3rd part off FTW
+									when BASE_ADDR + ADC_FTW_OFF + 2 =>
+										reg_ADC_FTW(23 downto 16) <= WB_DataIn(8*(k+1)-1 downto 8*k);
+										-- It is 4th part off FTW
+									when BASE_ADDR + ADC_FTW_OFF + 3 =>
+										reg_ADC_FTW(31 downto 24) <= WB_DataIn(8*(k+1)-1 downto 8*k);
+									when others => null; -- nothing to do on other addresses
+								end case;
+							end if;
+						end loop;
+				end case;
 			else
 				reg_clear	<= reg_clear;
 				reg_enable	<= reg_enable;
